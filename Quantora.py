@@ -6,9 +6,23 @@ import smtplib
 from email.message import EmailMessage
 import plotly.graph_objects as go
 from crewai import Agent, Task, Crew, LLM
+from PIL import Image
 
-# --- THEME CONFIGURATION ---
-st.set_page_config(page_title="Quantora Pro", layout="wide", page_icon="🏹")
+# 1. PAGE CONFIGURATION (Must be the ABSOLUTE FIRST Streamlit command)
+st.set_page_config(
+    page_title="Quantora Pro",
+    page_icon="Quantora.jpg",  # Sets your clean logo as the browser favicon
+    layout="wide"
+)
+
+# 2. LOAD & DISPLAY BRAND ASSETS
+try:
+    # Synchronized to your renamed asset file
+    logo = Image.open("Quantora.jpg")
+    st.sidebar.image(logo, use_container_width=True)
+except Exception:
+    # Safe fallback wrapper so your app won't crash if git tracking has a delay
+    st.sidebar.warning("🏹 Quantora Pro Asset Loading...")
 
 # FinTech UI CSS Injection (Bento Box / SaaS Style)
 st.markdown("""
