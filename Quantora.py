@@ -63,12 +63,17 @@ def send_telegram(msg, token, chat_id):
         except Exception as e:
             st.sidebar.error(f"Telegram failed: {e}")
 
+# REPLACE YOUR OLD EMAIL FUNCTION WITH THIS ONE:
 def send_email(msg_content, recipient):
     if recipient:
         try:
-            # Configure SMTP (e.g., Gmail using an App Password)
-            sender_email = "YOUR_SYSTEM_EMAIL@gmail.com"
-            sender_password = "YOUR_SMTP_APP_PASSWORD" 
+            # Safely pull your system email and app password from Streamlit Secrets
+            sender_email = st.secrets.get("SYSTEM_EMAIL")
+            sender_password = st.secrets.get("EMAIL_APP_PASSWORD")
+
+            if not sender_email or not sender_password:
+                st.sidebar.warning("⚠️ Email system configuration missing from Secrets.")
+                return False
 
             msg = EmailMessage()
             msg.set_content(msg_content)
