@@ -201,10 +201,17 @@ if st.button("RUN QUANT ANALYSIS", use_container_width=True):
                 agent=analyst
             )
             
-            report = Crew(agents=[analyst], tasks=[task]).kickoff()
+         report = Crew(agents=[analyst], tasks=[task]).kickoff()
             
             st.subheader("💡 Strategist Intelligence")
-            st.info(report.raw)
+            
+            # --- CLEAN SQUISHED TEXT RENDERING ---
+            # Cast raw crew output to a string and clean formatting gaps
+            raw_text = str(report.raw)
+            cleaned_brief = raw_text.replace("._", ". ").replace("_", " ").replace(".T", ". T").replace("..", ".")
+            
+            # Display the polished text on your UI
+            st.info(cleaned_brief)
 
         except Exception as e:
             st.error(f"Analysis Pipeline Interrupted: {e}")
