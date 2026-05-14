@@ -201,14 +201,21 @@ if st.button("RUN QUANT ANALYSIS", use_container_width=True):
                 agent=analyst
             )
             
-         # Check your indentation level on these lines:
-            report = Crew(agents=[analyst], tasks=[task]).kickoff()
+         report = Crew(agents=[analyst], tasks=[task]).kickoff()
             
             st.subheader("💡 Strategist Intelligence")
             
+            # --- AGGRESIVE TYPOGRAPHY SANITIZATION ---
             raw_text = str(report.raw)
-            cleaned_brief = raw_text.replace("._", ". ").replace("_", " ").replace(".T", ". T").replace("..", ".")
             
+            # 1. Strip out underscores and asterisks completely (the primary cause of clumping)
+            cleaned_brief = raw_text.replace("_", " ").replace("*", " ")
+            
+            # 2. Add structural breathing room around punctuation errors
+            cleaned_brief = cleaned_brief.replace(". ", ".").replace(".", ". ").replace("  ", " ")
+            cleaned_brief = cleaned_brief.replace("$ ", "$").strip()
+            
+            # Display the perfectly readable text
             st.info(cleaned_brief)
 
         except Exception as e:
