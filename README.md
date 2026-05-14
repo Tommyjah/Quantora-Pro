@@ -4,7 +4,7 @@
 
 Quantora Pro is a modern, high-performance financial technology dashboard that processes live market data pipelines, runs algorithmic technical indicators, and leverages advanced AI multi-agent orchestrations to deliver institutional-grade trading briefs.
 
-![Quantora Pro Logo](IMG_20260514_170127_820.jpg)
+![Quantora Pro Logo](Quantora.jpg)
 
 ## ⚡ Core Features
 * **Live Market Synchronization:** Real-time data routing via Alpha Vantage API.
