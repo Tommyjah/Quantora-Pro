@@ -184,38 +184,31 @@ if st.button("RUN QUANT ANALYSIS", use_container_width=True):
             send_telegram(alert_msg, tg_token, tg_id)
             send_email(alert_msg, email_user)
             st.toast("Alert payloads routed successfully!")
-
-            # 6. Deep Neural Market Analysis Core
+# --- 6. DEEP NEURAL MARKET ANALYSIS CORE ---
             my_ai_brain = LLM(model="groq/llama-3.3-70b-versatile")
             
             analyst = Agent(
                 role='Senior Crypto & Equity Strategist', 
                 goal=f'Provide professional structural trend context for {symbol}', 
-                backstory='You are a world-class system strategist with decades of quantitative fund experience. You process mathematical technical indicator values and map them into ultra-dense, executive briefs.',
+                backstory='You are a world-class system strategist with decades of quantitative fund experience. Provide plain text data without markdown punctuation formatting.',
                 llm=my_ai_brain
             )
             
             task = Task(
                 description=f"Analyze the structural {signal} breakout condition tracking {symbol} at current settlement pricing of ${current_price}. Formulate structural context around the 10-day crossing the 30-day structural line.", 
-                expected_output="A concise, high-signal 2-sentence market intelligence brief.", 
+                expected_output="A concise market intelligence brief. Do not use asterisks, underscores, or bold formatting text. Use plain standard sentences with spaces after periods.", 
                 agent=analyst
             )
             
-         report = Crew(agents=[analyst], tasks=[task]).kickoff()
+            # Execute the crew workflow
+            report = Crew(agents=[analyst], tasks=[task]).kickoff()
             
             st.subheader("💡 Strategist Intelligence")
             
-            # --- AGGRESIVE TYPOGRAPHY SANITIZATION ---
+            # Sanitize the output text safely to guarantee presentation spacing
             raw_text = str(report.raw)
+            cleaned_brief = raw_text.replace("_", " ").replace("*", " ").replace("  ", " ").strip()
             
-            # 1. Strip out underscores and asterisks completely (the primary cause of clumping)
-            cleaned_brief = raw_text.replace("_", " ").replace("*", " ")
-            
-            # 2. Add structural breathing room around punctuation errors
-            cleaned_brief = cleaned_brief.replace(". ", ".").replace(".", ". ").replace("  ", " ")
-            cleaned_brief = cleaned_brief.replace("$ ", "$").strip()
-            
-            # Display the perfectly readable text
             st.info(cleaned_brief)
 
         except Exception as e:
